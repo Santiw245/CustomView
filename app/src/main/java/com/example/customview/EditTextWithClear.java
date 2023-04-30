@@ -40,12 +40,26 @@ public class EditTextWithClear extends AppCompatEditText {
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (getCompoundDrawables()[2] != null){
-                    float clearButtonStart = (getWidth()-getPaddingEnd()-mClearButtonImage.getIntrinsicWidth());
+                if (getCompoundDrawablesRelative()[2] != null){
+//                    float clearButtonStart = (getWidth()-getPaddingEnd()-mClearButtonImage.getIntrinsicWidth());
+                    float clearButtonStart; //untuk bahasa yang menggunakan LTR
+                    float clearButtonEnd; //untuk bahasa yang menggunakan RTL
                     boolean isClearButtonClicked = false;
 
-                    if (event.getX() > clearButtonStart){
-                        isClearButtonClicked = true;
+//                    if (event.getX() > clearButtonStart){
+//                        isClearButtonClicked = true;
+//                    }
+                    if (getLayoutDirection() == LAYOUT_DIRECTION_RTL){
+                        clearButtonEnd = mClearButtonImage.getIntrinsicWidth() + getPaddingStart();
+                        if (event.getX() < clearButtonEnd){
+                            isClearButtonClicked = true;
+                        }
+                    }
+                    else {
+                        clearButtonStart = (getWidth()-getPaddingEnd()-mClearButtonImage.getIntrinsicWidth());
+                        if (event.getX() > clearButtonStart){
+                            isClearButtonClicked = true;
+                        }
                     }
 
                     if (isClearButtonClicked){
@@ -88,14 +102,14 @@ public class EditTextWithClear extends AppCompatEditText {
     }
 
     private void showClearButton(){
-        setCompoundDrawablesWithIntrinsicBounds
+        setCompoundDrawablesRelativeWithIntrinsicBounds
 //        diisi bagian kanan karena button close akan muncul di bagian kanan editText
                 (null, null, mClearButtonImage, null);
 
     }
 
     private void hideClearButtton(){
-        setCompoundDrawablesWithIntrinsicBounds
+        setCompoundDrawablesRelativeWithIntrinsicBounds
 //        dibut null semua karena ingin menghilangkan button clear
                 (null, null, null, null);
     }
